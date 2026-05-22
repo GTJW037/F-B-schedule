@@ -338,11 +338,35 @@
     .join('');
 
   function selectShift(dayKey, shift) {
-    if (selections[dayKey] === shift) {
-      delete selections[dayKey];
-    } else {
-      selections[dayKey] = shift;
+    // Initialize as array if not already
+    if (!Array.isArray(selections[dayKey])) {
+      selections[dayKey] = [];
     }
+
+    if (shift === 'R/O') {
+      // R/O clears everything else
+      if (selections[dayKey].includes('R/O')) {
+        selections[dayKey] = [];
+      } else {
+        selections[dayKey] = ['R/O'];
+      }
+    } else {
+      // Remove R/O if selecting a shift
+      selections[dayKey] = selections[dayKey].filter(s => s !== 'R/O');
+      
+      // Toggle the shift
+      if (selections[dayKey].includes(shift)) {
+        selections[dayKey] = selections[dayKey].filter(s => s !== shift);
+      } else {
+        selections[dayKey].push(shift);
+      }
+    }
+
+    // Clean up empty arrays
+    if (selections[dayKey].length === 0) {
+      delete selections[dayKey];
+    }
+
     renderSchedule();
   }
 
@@ -352,8 +376,8 @@
 
     for (let i = 0; i < 7; i++) {
       const day = days[i];
-      const selected = selections[day.key];
-      const isOff = selected === 'R/O';
+      const selected = selections[day.key] || [];
+      const isOff = selected.includes('R/O');
       const weekendClass = day.isWeekend ? 'weekend' : '';
       const offClass = isOff ? 'is-off' : '';
       const hours = dayHours[day.dayOfWeek];
@@ -369,7 +393,7 @@
 
       const dayShifts = getShiftsForDay(day.dayOfWeek);
       dayShifts.forEach(shift => {
-        const isSelected = selected === shift;
+        const isSelected = selected.includes(shift);
         const isOffBtn = shift === 'R/O';
         let cls = 'shift-btn';
         if (isSelected && isOffBtn) cls += ' off-selected';
@@ -402,7 +426,8 @@
     };
 
     days.forEach(day => {
-      data.schedule[`${day.dayName} ${day.date}`] = selections[day.key] || 'NOT SET';
+      const sel = selections[day.key] || [];
+      data.schedule[`${day.dayName} ${day.date}`] = sel.join(', ') || 'NOT SET';
     });
 
     const btn = document.getElementById('submitBtn');
