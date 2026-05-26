@@ -275,13 +275,13 @@
     // 1=Mon, 2=Tue, 3=Wed, 4=Thu, 5=Fri, 6=Sat, 0=Sun
     if (dayOfWeek >= 1 && dayOfWeek <= 3) {
       // Mon-Wed
-      return ['GS', 'GB-ANY', 'BC-ANY', 'HW', 'R/O'];
+      return ['GS', 'GB-ANY', 'BC-ANY', 'HW', 'BQ', 'R/O'];
     } else if (dayOfWeek === 4 || dayOfWeek === 5) {
       // Thu-Fri: single GB, full BC
-      return ['GS', 'GB-ANY', 'BC-AM', 'BC-PM', 'BC-ANY', 'HW', 'R/O'];
+      return ['GS', 'GB-ANY', 'BC-AM', 'BC-PM', 'BC-ANY', 'HW', 'BQ', 'R/O'];
     } else {
       // Sat-Sun: full GB and BC
-      return ['GS', 'GB-AM', 'GB-PM', 'GB-ANY', 'BC-AM', 'BC-PM', 'BC-ANY', 'HW', 'R/O'];
+      return ['GS', 'GB-AM', 'GB-PM', 'GB-ANY', 'BC-AM', 'BC-PM', 'BC-ANY', 'HW', 'BQ', 'R/O'];
     }
   }
 
@@ -289,7 +289,7 @@
     GS: 'Grill Server',
     'GB-AM': 'Grill Bar AM', 'GB-PM': 'Grill Bar PM', 'GB-ANY': 'Grill Bar Either',
     'BC-AM': 'Bev Cart AM', 'BC-PM': 'Bev Cart PM', 'BC-ANY': 'Bev Cart Either',
-    HW: 'Halfway'
+    HW: 'Halfway', BQ: 'Banquets'
   };
 
   // Hours per day
